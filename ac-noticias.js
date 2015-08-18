@@ -2,7 +2,7 @@
     'use strict';
 
     var scripts = document.getElementsByTagName("script");
-    var currentScriptPath = scripts[scripts.length-1].src;
+    var currentScriptPath = scripts[scripts.length - 1].src;
     //console.log(currentScriptPath);
 
     angular.module('ac.noticias', ['ngRoute'])
@@ -26,7 +26,6 @@
             controllerAs: 'noticiasCtrl'
         };
     }
-
 
 
     NoticiasController.$inject = ["$http", "$scope", "$routeParams", "NoticiasService", "$location", "toastr", 'NoticiasServiceUtils'];
@@ -60,21 +59,10 @@
             comentarios: []
         };
 
-        //vm.proveedores = [
-        //    {proveedor_id: '1', nombre: 'prov01'},
-        //    {proveedor_id: '2', nombre: 'prov02'},
-        //    {proveedor_id: '3', nombre: 'prov03'},
-        //    {proveedor_id: '4', nombre: 'prov04'}
-        //];
         vm.proveedores = [];
 
         var foto = {nombre: '', destacado: ''};
         var precio = {tipo: '', precio: ''};
-
-
-        //vm.mostrar = function(){
-        //  console.log(vm.listProveedores);
-        //};
 
 
         if (vm.id == 0) {
@@ -84,7 +72,6 @@
             vm.isUpdate = true;
 
             NoticiasService.getNoticiaByID(vm.id, function (data) {
-                //console.log(data);
                 data.tipo = "" + data.tipo;
                 vm.noticia = data;
 
@@ -148,10 +135,6 @@
         }
 
         function uploadImages() {
-            //var files = document.getElementById("images");
-            //console.log(files.files[0]);
-            //console.log(vm.fotos);
-
             if (vm.fotos.length == 0) {
                 return;
             }
@@ -159,9 +142,6 @@
             var form_data = new FormData();
 
             vm.fotos.forEach(function (entry) {
-
-                //form_data.append('images', files.files[0]);
-                //console.log(entry);
                 form_data.append('images', entry);
             });
 
@@ -170,7 +150,6 @@
 
             };
             ajax.onload = function (data) {
-                //console.log(data);
 
                 toastr.success("Noticia guardado con éxito");
                 $location.path('/listado_noticias');
@@ -229,11 +208,12 @@
         }
     }
 
-    NoticiasService.$inject = ['$http', '$cacheFactory', 'NoticiasServiceUtils', 'AcUtilsGlobals'];
-    function NoticiasService($http, $cacheFactory, NoticiasServiceUtils, AcUtilsGlobals) {
+    NoticiasService.$inject = ['$http', '$cacheFactory', 'NoticiasServiceUtils'];
+    function NoticiasService($http, $cacheFactory, NoticiasServiceUtils) {
         var service = {};
         var sucursal_id = 1;
         var clearCache = true;
+        var url = currentScriptPath.replace('ac-noticias.js', 'noticias.php');
 
         service.getNoticias = getNoticias;
         service.getNoticiaByID = getNoticiaByID;
@@ -245,28 +225,10 @@
         return service;
 
         function getNoticias(callback) {
-            //var $httpDefaultCache = $cacheFactory.get('$http');
-            //var cachedData = [];
 
 
-            //if ($httpDefaultCache.get('./stock-api/noticias.php?function=getNoticias') != undefined) {
-            //    if (NoticiasServiceUtils.clearCache) {
-            //        $httpDefaultCache.remove('./stock-api/stock.php?function=getNoticias');
-            //    }
-            //    else {
-            //        //console.log('lo');
-            //        cachedData = $httpDefaultCache.get('./stock-api/noticias.php?function=getNoticias');
-            //        callback(cachedData);
-            //        return;
-            //    }
-            //}
-
-
-            return $http.get('./stock-api/noticias.php?function=getNoticias', {cache: false})
+            return $http.get(url+'?function=getNoticias', {cache: false})
                 .success(function (data) {
-                    //console.log(data);
-                    //$httpDefaultCache.put('./stock-api/noticias.php?function=getNoticias', data);
-                    //NoticiasServiceUtils.clearCache = false;
 
                     for (var i = 0; i < data.length; i++) {
                         var fecha = new Date(data[i].fecha);
@@ -287,11 +249,9 @@
 
         function getNoticiaByID(id, callback) {
             getNoticias(function (data) {
-                //console.log(data);
                 var response = data.filter(function (entry) {
                     return entry.noticia_id === parseInt(id);
                 })[0];
-                //console.log(response);
                 callback(response);
             })
 
@@ -299,7 +259,7 @@
 
         function save(noticia, _function, callback) {
 
-            return $http.post('./stock-api/noticias.php',
+            return $http.post(url,
                 {function: _function, noticia: JSON.stringify(noticia)})
                 .success(function (data) {
                     //console.log(data);
@@ -314,7 +274,7 @@
 
         function saveComentario(comentario, _function, callback) {
 
-            return $http.post('./stock-api/noticias.php',
+            return $http.post(url,
                 {function: _function, comentario: JSON.stringify(comentario)})
                 .success(function (data) {
                     //console.log(data);
@@ -328,7 +288,7 @@
 
 
         function deleteNoticia(id, callback) {
-            return $http.post('./stock-api/noticias.php',
+            return $http.post(url,
                 {function: 'deleteNoticia', id: id})
                 .success(function (data) {
                     callback(data);
