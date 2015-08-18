@@ -1,0 +1,74 @@
+<div >
+    <div class="title"><h1>Listado Noticias</h1></div>
+    <div class="v-spacer"></div>
+
+    <div class="full-width">
+
+        <input type="text" ng-model="listadoNoticiasCtrl.filtro" class="full-width" required/>
+        <label>Buscar...</label>
+    </div>
+
+    <table st-table="listadoNoticiasCtrl.noticias" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Fecha</th>
+            <th >Titulo</th>
+            <th style="width: 5%;text-align: center" colspan="2">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr ng-repeat="row in listadoNoticiasCtrl.noticias | filter:listadoNoticiasCtrl.filtro">
+
+            <td class="">{{row.fecha | date}}</td>
+            <td class="">{{row.titulo}}</td>
+            <td class="">
+                <div class="btn">
+                    <button class="btn-medium btn-archive" ng-click="listadoNoticiasCtrl.cancelarDeuda();"></button>
+                    <label>Cancelar Deuda</label>
+                </div>
+            </td>
+            <td class="">
+                <button ng-click="listadoNoticiasCtrl.detalle(row.noticia_id);"
+                        class="btn-medium btn-visibility"></button>
+                <label>Ver Detalle</label>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+
+    <!--<div class="lista-flex" ng-repeat="deudor in listadoNoticiasCtrl.noticias | filter:listadoNoticiasCtrl.filtro">-->
+
+    <!--<span>{{deudor.nombre}}</span>-->
+    <!--<span>{{deudor.apellido}}</span>-->
+    <!--<span>{{deudor.saldo | currency}}</span>-->
+
+
+    <!--<div>-->
+    <!--<div class="btn">-->
+    <!--<button class="btn-medium btn-archive"></button>-->
+    <!--<label>Cancelar Deuda</label>-->
+    <!--</div>-->
+    <!--<div class="btn">-->
+    <!--<button ng-click="listadoNoticiasCtrl.mostrarDetalle = deudor;"-->
+    <!--class="btn-medium btn-visibility"></button>-->
+    <!--<label>Ver Detalle</label>-->
+    <!--</div>-->
+
+    <!--</div>-->
+
+
+    <!--</div>-->
+
+    <!--<div ng-if="listadoNoticiasCtrl.mostrarDetalle !== [];">-->
+    <!--<h2>Detalle de deuda</h2>-->
+
+    <!--<div style="display: flex;" ng-repeat="detalle in listadoNoticiasCtrl.mostrarDetalle.detalles">-->
+    <!--<span class="descr">{{detalle.fecha}}</span>-->
+    <!--<span>{{detalle.importe | currency}}</span>-->
+    <!--</div>-->
+    <!--</div>-->
+
+</div>

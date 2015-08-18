@@ -1,0 +1,93 @@
+<div class="title">
+    <div class="btn ">
+        <input type="submit" class="btn-back btn-medium no-margin"
+               onclick="window.location='#/listado_noticias';"
+               value="">
+        <label>Volver</label>
+    </div>
+    <h1>Administrar Noticias</h1>
+</div>
+<div class="v-spacer"></div>
+<form
+      name="productForm" novalidate>
+    <div style="display: flex; flex-direction: row; justify-content: flex-start;">
+        <div>
+            <input type="text" id="titulo" name="titulo" ng-model="noticiasCtrl.noticia.titulo" ng-maxlength="45"
+                   required><br>
+            <label for="titulo">Titulo</label>
+        </div>
+        <div>
+            <select name="" id="tipo_precio" ng-model="noticiasCtrl.noticia.tipo">
+                <option value="0">Noticia</option>
+                <option value="1">Evento</option>
+            </select>
+            <br><label for="tipo_precio">Noticia o Evento</label>
+        </div>
+
+        <div  ng-if="noticiasCtrl.noticia.tipo == 1;">
+            <input type="date" id="fecha" name="fecha" ng-model="noticiasCtrl.noticia.fecha" ng-maxlength="45"
+                   required><br>
+            <label for="titulo">Fecha</label>
+        </div>
+
+    </div>
+    <div class="form-flex" >
+        <div style="width: 100%;">
+            <label for="detalle">Detalles</label>
+            <textarea style="width: 100%; height: 200px;" id="detalle" name="detalle" ng-model="noticiasCtrl.noticia.detalles"
+                      ng-maxlength="2000" required></textarea><br>
+        <span style="color:red" ng-show="productForm.detalles.$dirty && productForm.detalles.$invalid">
+            <span ng-show="productForm.detalles.$error.required">detalle es obligatorio</span>
+            <span ng-show="productForm.detalles.$error.maxlength">El detalle es demasiado largo (Máximo 1000)</span>
+        </span>
+        </div>
+
+    </div>
+
+    <div class="form-flex">
+
+        <div>
+            <div><h3>Fotos</h3><br/>
+                <input type="file" name="images" id="images"
+                       data-dbinf-on-files-selected-noticias="agregarImagen(selectedFileList)"/>
+            </div>
+            <br/>
+
+            <div ng-repeat="image in noticiasCtrl.noticia.fotos">
+                <span>{{image.foto}}</span>
+
+                <div class="btn">
+                    <button ng-click="noticiasCtrl.deleteImage(image.foto)"
+                            class="btn-delete-black btn-medium"></button>
+                    <label>Eliminar Foto</label>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <br/>
+
+    <div>
+        <!--<input type="submit"-->
+        <!--ng-disabled="productForm.user.$dirty && productForm.user.$invalid ||-->
+        <!--productForm.email.$dirty && productForm.email.$invalid">-->
+        <div class="btn"><input type="submit" ng-click="noticiasCtrl.save();" class="relieve-2 btn-ok btn-big" value="">
+            <label>Guardar Noticia</label>
+        </div>
+
+        <div ng-if="noticiasCtrl.id != 0" class="btn">
+            <input type="submit" ng-click="noticiasCtrl.delete();"
+                   class="relieve-2 btn-delete btn-big" value="">
+            <label>Eliminar Noticia</label>
+        </div>
+
+        <div ng-if="noticiasCtrl.id != 0" class="btn">
+            <input type="submit" ng-click="noticiasCtrl.comentarios();"
+                   class="relieve-2 btn-receipt btn-big" value="">
+            <label>Ver comentarios</label>
+        </div>
+    </div>
+
+</form>
+

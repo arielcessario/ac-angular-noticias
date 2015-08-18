@@ -18,14 +18,38 @@
                 parametro: '='
             },
             templateUrl: currentScriptPath.replace('.js', '.html'),
-            controller: function ($scope, $compile, $http) {
-
-                var vm = this;
-
-            },
+            controller: ListadoNoticiasController,
 
             controllerAs: 'listadoNoticiasCtrl'
         };
+    }
+
+    ListadoNoticiasController.$inject = ['acAngularLoginClientService','NoticiasService', '$location'];
+    function ListadoNoticiasController(acAngularLoginClientService, NoticiasService, $location) {
+
+        acAngularLoginClientService.checkCookie();
+
+        var vm = this;
+
+        vm.noticias = [];
+        vm.detalle = detalle;
+
+        function detalle(id){
+            $location.path('/noticias/'+id);
+        }
+
+        NoticiasService.getNoticias(
+            function (data){
+                //console.log(data);
+                //for(var i = 0; i<data.length; i++){
+                //
+                //    var fecha = data[i].fecha.getDate();
+                //    console.log(fecha);
+                //}
+                vm.noticias = data;
+            }
+        );
+
     }
 
 })();
