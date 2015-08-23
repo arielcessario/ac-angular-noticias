@@ -1,9 +1,9 @@
 <?php
 session_start();
-if (file_exists('./MyDBi.php')) {
-    require_once 'MyDBi.php';
-} else {
+if (file_exists('../../MyDBi.php')) {
     require_once '../../MyDBi.php';
+} else {
+    require_once 'MyDBi.php';
 }
 
 $data = file_get_contents("php://input");
