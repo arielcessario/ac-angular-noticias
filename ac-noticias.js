@@ -4,6 +4,9 @@
     var scripts = document.getElementsByTagName("script");
     var currentScriptPath = scripts[scripts.length - 1].src;
     //console.log(currentScriptPath);
+    if(currentScriptPath.length == 0){
+        currentScriptPath = window.installPath + '/ac-angular-noticias/noticias.php';
+    };
 
     angular.module('ac.noticias', ['ngRoute'])
         .directive('acNoticias', AcNoticias)
